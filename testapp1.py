@@ -3,7 +3,7 @@ import streamlit as st
 from mtcnn import MTCNN
 from PIL import Image, ImageDraw
 
-st.title("Pythonで顔認識してマスクを付けさせる")
+st.title("Pythonで顔認識して服を変更する")
 
 # 画像ファイルをアップロードするためのウィジェット
 imgfile = st.file_uploader("Upload Image", type=["png", "jpg"], accept_multiple_files=False)
@@ -13,7 +13,7 @@ if imgfile is not None:
     img = Image.open(imgfile)
 
     # マスクのイラストの画像
-    mask = Image.open("neko.jpg")
+    mask = Image.open("img/h4.jpg")
 
     # 元の画像を表示
     st.write("元の画像")
@@ -36,10 +36,10 @@ if imgfile is not None:
         x, y, w, h = result["box"]
 
         # マスクの画像を顔のサイズに合わせる．
-        mask_resized = mask.resize((w, h//2)) 
+        mask_resized = mask.resize((3*w, 3*h)) 
 
         # マスクの画像を，検出された顔に貼り付ける． a      
-        img.paste(mask_resized, (x, y+h//2), mask_resized.convert("RGBA"))
+        img.paste(mask_resized, (x-120, 2*y+h//2-80), mask_resized.convert("RGBA"))
 
     pil_img = Image.fromarray(np.uint8(img))
 
